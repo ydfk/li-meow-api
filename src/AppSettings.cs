@@ -7,7 +7,6 @@
 //-----------------------------------------------------------------------
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 using System;
 
 namespace FastHttpApi
@@ -16,11 +15,12 @@ namespace FastHttpApi
     {
         static AppSettings()
         {
-            ////请注意要把当前appsetting.json 文件->右键->属性->复制到输出目录->始终复制
-            ////ReloadOnChange = true 当appsettings.json被修改时重新加载
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             Configuration = new ConfigurationBuilder()
-                .Add(new JsonConfigurationSource { Path = "appsettings.json", ReloadOnChange = true })
-                .Build();
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
+            .Build();
         }
 
         public static IConfiguration Configuration { get; set; }
@@ -66,6 +66,10 @@ namespace FastHttpApi
         public static string RedisPassword => GetStr(string.Empty, "Password", "Redis");
 
         #endregion Redis
+
+        #region init
+        public static string InitUsers => GetStr(string.Empty, "Init", "Users");
+        #endregion
 
         #region 公共
 

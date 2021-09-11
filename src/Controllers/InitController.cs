@@ -6,49 +6,46 @@
 // <date>2021/9/1 14:07:44</date>
 //-----------------------------------------------------------------------
 
+using FastHttpApi.Extension;
 using FastHttpApi.Schema.User;
 using FastHttpApi.Service.Contract;
+using FastHttpApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FastHttpApi.Controllers
 {
     /// <summary>
-    /// 测试
+    /// 初始化
     /// </summary>
-    public class TestController : ApiController
+    [AllowAnonymous]
+    public class InitController : ApiController
     {
         private readonly IUserService _userService;
 
-        public TestController(IUserService userService)
+        public InitController(IUserService userService)
         {
             _userService = userService;
         }
 
         /// <summary>
-        /// 测试
+        /// 初始化用户
         /// </summary>
-        /// <returns>当前用户</returns>
-        [HttpGet]
-        public string Get()
-        {
-            return UserContext.Id;
-        }
-
-        /// <summary>
-        /// 测试新增用户
-        /// </summary>
-        /// <param name="user">用户</param>
         /// <returns>结果</returns>
-        [HttpPost("User"), AllowAnonymous]
-        public async Task<UserModel> AddUser([FromBody] UserModel user)
+        [HttpPost("User")]
+        public async Task InitUser()
         {
-            return await _userService.AddUser(new UserModel
+            var initUsers = AppSettings.InitUsers;
+            if (initUsers.IsNotNullOrEmpty())
             {
-                UserName = user.UserName,
-                Password = user.Password
-            });
+                var users = JsonUtil.ObjectFromJson<List<UserModel>>(initUsers);
+                foreach (var user in users)
+                {
+                    await _userService.AddUser(user);
+                }
+            }
         }
     }
 }

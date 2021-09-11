@@ -5,11 +5,8 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 16:09:43</date>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FastHttpApi.Schema.User;
+using System.Threading.Tasks;
 
 namespace FastHttpApi.Service.Contract
 {
@@ -20,5 +17,7 @@ namespace FastHttpApi.Service.Contract
         Task<UserModel> AddUser(UserModel user);
 
         Task<UserModel> GetUserByUserName(string userName);
+
+        Task<bool> ModifyPassword(string userId, string oldPassword, string newPassword);
     }
 }

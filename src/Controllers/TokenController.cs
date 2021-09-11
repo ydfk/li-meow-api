@@ -36,9 +36,9 @@ namespace FastHttpApi.Controllers
         [HttpGet, AllowAnonymous]
         public async Task<TokenRecord> GetToken(string userName, string password)
         {
-            var user = await _userService.GetUserByUserName(userName);
+            var user = await _userService.GetUserByUserName(userName.Trim().ToLower());
 
-            if (user != null && user.Password == SecurityUtil.Md5Password(userName, password))
+            if (user != null && user.Password == SecurityUtil.Md5Password(userName, password.Trim()))
             {
                 return new TokenRecord(JwtUtil.GenerateToken(user.Id), DateTime.UtcNow.AddMinutes(-3).AddSeconds(AppSettings.JwtExpiration));
             }

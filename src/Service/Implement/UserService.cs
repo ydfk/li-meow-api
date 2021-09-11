@@ -5,15 +5,12 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 16:09:43</date>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FastHttpApi.Entity.User;
 using FastHttpApi.Repository;
 using FastHttpApi.Schema.User;
 using FastHttpApi.Service.Contract;
 using FastHttpApi.Utility;
+using System.Threading.Tasks;
 
 namespace FastHttpApi.Service.Implement
 {
@@ -38,19 +35,32 @@ namespace FastHttpApi.Service.Implement
 
         public async Task<UserModel> AddUser(UserModel user)
         {
-            user.Password = SecurityUtil.Md5Password(user.UserName, user.Password);
-            var existUser = await _userRepository.Get<UserModel>(x => x.UserName == user.UserName);
+            if (await _userRepository.Count(x => x.UserName == user.UserName) == 0)
+            {
+                user.Password = SecurityUtil.Md5Password(user.UserName, user.Password);
+                return await _userRepository.Save(user);
+            }
 
-            if (existUser != null)
+            return null;
+        }
+
+        public async Task<bool> ModifyPassword(string userId, string oldPassword, string newPassword)
+        {
+            if (!newPassword.Equals(oldPassword))
             {
-                existUser.Password = user.Password;
-                existUser.Name = user.Name;
-                return await _userRepository.Update<UserModel>(existUser);
+                var user = await _userRepository.Get<UserModel>(x => x.Id == userId);
+                if (user != null)
+                {
+                    if (SecurityUtil.Md5Password(user.UserName, oldPassword) == user.Password)
+                    {
+                        user.Password = SecurityUtil.Md5Password(user.UserName, newPassword);
+                        await _userRepository.Update(user);
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                return await _userRepository.Save<UserModel>(user);
-            }
+
+            return false;
         }
     }
 }
