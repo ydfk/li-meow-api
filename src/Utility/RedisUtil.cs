@@ -8,7 +8,7 @@
 
 using StackExchange.Redis.Extensions.Core.Configuration;
 
-namespace FastHttpApi.Utility
+namespace LiMeowApi.Utility
 {
     public class RedisUtil
     {

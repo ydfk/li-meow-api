@@ -5,14 +5,14 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 16:09:43</date>
 //-----------------------------------------------------------------------
-using FastHttpApi.Entity.User;
-using FastHttpApi.Repository;
-using FastHttpApi.Schema.User;
-using FastHttpApi.Service.Contract;
-using FastHttpApi.Utility;
+using LiMeowApi.Entity.User;
+using LiMeowApi.Repository;
+using LiMeowApi.Schema.User;
+using LiMeowApi.Service.Contract;
+using LiMeowApi.Utility;
 using System.Threading.Tasks;
 
-namespace FastHttpApi.Service.Implement
+namespace LiMeowApi.Service.Implement
 {
     public class UserService : IUserService
     {

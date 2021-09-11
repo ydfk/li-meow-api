@@ -6,16 +6,16 @@
 // <date>2021/9/1 14:07:44</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Extension;
-using FastHttpApi.Schema.User;
-using FastHttpApi.Service.Contract;
-using FastHttpApi.Utility;
+using LiMeowApi.Extension;
+using LiMeowApi.Schema.User;
+using LiMeowApi.Service.Contract;
+using LiMeowApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FastHttpApi.Controllers
+namespace LiMeowApi.Controllers
 {
     /// <summary>
     /// 初始化

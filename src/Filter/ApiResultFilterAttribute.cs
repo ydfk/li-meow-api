@@ -5,14 +5,14 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 11:55:56</date>
 //-----------------------------------------------------------------------
-using FastHttpApi.Entity.Other;
-using FastHttpApi.Service.Contract;
+using LiMeowApi.Entity.Other;
+using LiMeowApi.Service.Contract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 using System;
 
-namespace FastHttpApi.Filter
+namespace LiMeowApi.Filter
 {
     public class ApiResultFilterAttribute : ActionFilterAttribute
     {

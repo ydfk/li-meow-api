@@ -8,7 +8,7 @@
 using System;
 using System.Globalization;
 
-namespace FastHttpApi.Extension
+namespace LiMeowApi.Extension
 {
     public static class DateTimeExtension
     {

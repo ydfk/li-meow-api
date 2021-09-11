@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace FastHttpApi.Utility
+namespace LiMeowApi.Utility
 {
     public static class SecurityUtil
     {

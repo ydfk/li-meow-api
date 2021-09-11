@@ -6,12 +6,12 @@
 // <date>2021/9/1 13:33:41</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Entity.Other;
-using FastHttpApi.Repository;
-using FastHttpApi.Service.Contract;
+using LiMeowApi.Entity.Other;
+using LiMeowApi.Repository;
+using LiMeowApi.Service.Contract;
 using System.Threading.Tasks;
 
-namespace FastHttpApi.Service.Implement
+namespace LiMeowApi.Service.Implement
 {
     public class OtherService : IOtherService
     {

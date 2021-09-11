@@ -6,9 +6,9 @@
 // <date>2021/9/1 16:35:39</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Schema.Base;
+using LiMeowApi.Schema.Base;
 
-namespace FastHttpApi.Schema.User
+namespace LiMeowApi.Schema.User
 {
     public class UserModel : BaseModel
     {

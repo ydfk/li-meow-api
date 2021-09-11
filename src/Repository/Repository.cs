@@ -5,8 +5,8 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 13:53:58</date>
 //-----------------------------------------------------------------------
-using FastHttpApi.Entity.Base;
-using FastHttpApi.Schema.Base;
+using LiMeowApi.Entity.Base;
+using LiMeowApi.Schema.Base;
 using Mapster;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -20,7 +20,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FastHttpApi.Repository
+namespace LiMeowApi.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
@@ -39,17 +39,17 @@ namespace FastHttpApi.Repository
             return (await GetCollection().Find(filter).SingleOrDefaultAsync()).Adapt<TModel>();
         }
 
-        public async Task<IList<TModel>> List<TModel>(Expression<Func<TEntity, bool>> filter)
+        public async Task<List<TModel>> List<TModel>(Expression<Func<TEntity, bool>> filter)
         {
             return (await GetCollection().Find(filter).ToListAsync()).Adapt<IList<TModel>>();
         }
 
-        public async Task<IList<TModel>> List<TModel>()
+        public async Task<List<TModel>> List<TModel>()
         {
             return (await GetCollection().Find(Builders<TEntity>.Filter.Empty).ToListAsync()).Adapt<IList<TModel>>();
         }
 
-        public async Task<IList<TModel>> ListByIds<TModel>(IList<string> ids)
+        public async Task<List<TModel>> ListByIds<TModel>(List<string> ids)
         {
             var builderFilter = Builders<TEntity>.Filter;
             var query = builderFilter.In(x => x.Id, ids);

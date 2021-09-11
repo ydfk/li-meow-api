@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------
 using System;
 
-namespace FastHttpApi.Schema.Base
+namespace LiMeowApi.Schema.Base
 {
     public class BaseModel
     {

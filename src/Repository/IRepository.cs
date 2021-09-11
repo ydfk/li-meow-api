@@ -5,10 +5,10 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Linq;
 using System.Linq.Expressions;
-using FastHttpApi.Entity.Base;
-using FastHttpApi.Schema.Base;
+using LiMeowApi.Entity.Base;
+using LiMeowApi.Schema.Base;
 
-namespace FastHttpApi.Repository
+namespace LiMeowApi.Repository
 {
     public interface IRepository<TEntity>
     {
@@ -18,11 +18,11 @@ namespace FastHttpApi.Repository
 
         Task<TModel> Get<TModel>(Expression<Func<TEntity, bool>> filter);
 
-        Task<IList<TModel>> List<TModel>(Expression<Func<TEntity, bool>> filter);
+        Task<List<TModel>> List<TModel>(Expression<Func<TEntity, bool>> filter);
 
-        Task<IList<TModel>> List<TModel>();
+        Task<List<TModel>> List<TModel>();
 
-        Task<IList<TModel>> ListByIds<TModel>(IList<string> ids);
+        Task<List<TModel>> ListByIds<TModel>(List<string> ids);
 
         PageResultModel<TModel> PageData<TModel>(Expression<Func<TEntity, bool>> filter, PageQueryModel pageQuery);
 

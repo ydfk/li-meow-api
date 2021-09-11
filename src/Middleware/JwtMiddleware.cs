@@ -6,17 +6,17 @@
 // <date>2021/9/1 15:32:25</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Repository;
-using FastHttpApi.Schema.App;
-using FastHttpApi.Schema.User;
-using FastHttpApi.Utility;
+using LiMeowApi.Repository;
+using LiMeowApi.Schema.App;
+using LiMeowApi.Schema.User;
+using LiMeowApi.Utility;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Threading.Tasks;
-using FastHttpApi.Entity.User;
-using FastHttpApi.Service.Contract;
+using LiMeowApi.Entity.User;
+using LiMeowApi.Service.Contract;
 
-namespace FastHttpApi.Middleware
+namespace LiMeowApi.Middleware
 {
     public class JwtMiddleware
     {

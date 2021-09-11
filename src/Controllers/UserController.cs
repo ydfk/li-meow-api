@@ -6,8 +6,8 @@
 // <date>9/11/2021 12:06:36 PM</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Controllers;
-using FastHttpApi.Service.Contract;
+using LiMeowApi.Controllers;
+using LiMeowApi.Service.Contract;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

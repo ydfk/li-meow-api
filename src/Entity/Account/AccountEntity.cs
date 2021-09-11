@@ -5,7 +5,7 @@
 // <author>liyuhang</author>
 // <date>9/11/2021 1:37:54 PM</date>
 //-----------------------------------------------------------------------
-using FastHttpApi.Entity.Base;
+using LiMeowApi.Entity.Base;
 using LiMeowApi.Schema.Account;
 using MongoDB.Bson.Serialization.Attributes;
 using System;

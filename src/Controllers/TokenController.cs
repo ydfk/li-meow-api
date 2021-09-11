@@ -6,14 +6,14 @@
 // <date>2021/9/1 16:09:43</date>
 //-----------------------------------------------------------------------
 
-using FastHttpApi.Service.Contract;
-using FastHttpApi.Utility;
+using LiMeowApi.Service.Contract;
+using LiMeowApi.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace FastHttpApi.Controllers
+namespace LiMeowApi.Controllers
 {
     /// <summary>
     /// token相关

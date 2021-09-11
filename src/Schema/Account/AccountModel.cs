@@ -5,12 +5,13 @@
 // <author>liyuhang</author>
 // <date>9/11/2021 1:46:08 PM</date>
 //-----------------------------------------------------------------------
+using LiMeowApi.Schema.Base;
 using LiMeowApi.Schema.Account;
 using System;
 
 namespace LiMeowApi.Schema
 {
-    public class AccountModel
+    public class AccountModel: BaseModel
     {
         /// <summary>
         /// 日期
