@@ -41,12 +41,12 @@ namespace LiMeowApi.Repository
 
         public async Task<List<TModel>> List<TModel>(Expression<Func<TEntity, bool>> filter)
         {
-            return (await GetCollection().Find(filter).ToListAsync()).Adapt<IList<TModel>>();
+            return (await GetCollection().Find(filter).ToListAsync()).Adapt<List<TModel>>();
         }
 
         public async Task<List<TModel>> List<TModel>()
         {
-            return (await GetCollection().Find(Builders<TEntity>.Filter.Empty).ToListAsync()).Adapt<IList<TModel>>();
+            return (await GetCollection().Find(Builders<TEntity>.Filter.Empty).ToListAsync()).Adapt<List<TModel>>();
         }
 
         public async Task<List<TModel>> ListByIds<TModel>(List<string> ids)
@@ -54,7 +54,7 @@ namespace LiMeowApi.Repository
             var builderFilter = Builders<TEntity>.Filter;
             var query = builderFilter.In(x => x.Id, ids);
 
-            return ((await GetCollection().FindAsync(query)).ToList()).Adapt<IList<TModel>>();
+            return (await GetCollection().FindAsync(query)).ToList().Adapt<List<TModel>>();
         }
 
         public PageResultModel<TModel> PageData<TModel>(Expression<Func<TEntity, bool>> filter, PageQueryModel pageQuery)
@@ -116,7 +116,6 @@ namespace LiMeowApi.Repository
         {
             var mongoConnectionUrl = new MongoUrl(dbPath);
             var mongoClientSettings = MongoClientSettings.FromUrl(mongoConnectionUrl);
-
             if (showlog)
             {
                 mongoClientSettings.ClusterConfigurator = cb =>

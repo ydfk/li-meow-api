@@ -21,7 +21,7 @@ namespace LiMeowApi.Schema
         /// <summary>
         /// 金额
         /// </summary>
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
 
         /// <summary>
         /// 分类

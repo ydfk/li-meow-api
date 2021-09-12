@@ -56,7 +56,7 @@ namespace LiMeowApi
                 ////首字母小写
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 ////枚举输出字符串
-                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                ////options.SerializerSettings.Converters.Add(new StringEnumConverter());
                 ////中文乱码
                 options.SerializerSettings.StringEscapeHandling = StringEscapeHandling.EscapeNonAscii;
             });

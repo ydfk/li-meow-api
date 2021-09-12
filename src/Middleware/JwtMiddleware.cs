@@ -44,7 +44,7 @@ namespace LiMeowApi.Middleware
             if (JwtUtil.VerifyToken(token))
             {
                 var userId = JwtUtil.SerializeJwt(token);
-                var user = await new Repository<UserEntity>().Get<UserModel>(x => x.Id == userId);
+                var user = await new Repository<UserEntity>().Get<SimpleUserModel>(x => x.Id == userId);
                 context.Items[AppConstant.UserContext] = user;
             }
         }

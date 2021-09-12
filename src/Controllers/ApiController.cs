@@ -21,13 +21,13 @@ namespace LiMeowApi.Controllers
     [Route("Api/[controller]")]
     public class ApiController : ControllerBase
     {
-        public UserModel UserContext
+        public SimpleUserModel UserContext
         {
             get
             {
                 if (HttpContext.Items != null && HttpContext.Items.ContainsKey(AppConstant.UserContext))
                 {
-                    return (UserModel)HttpContext.Items[AppConstant.UserContext];
+                    return (SimpleUserModel)HttpContext.Items[AppConstant.UserContext];
                 }
                 else
                 {

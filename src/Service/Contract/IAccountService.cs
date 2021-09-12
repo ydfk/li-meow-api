@@ -6,6 +6,7 @@
 // <date>9/11/2021 5:03:12 PM</date>
 //-----------------------------------------------------------------------
 using LiMeowApi.Schema;
+using LiMeowApi.Schema.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,10 @@ namespace LiMeowApi.Service.Contract
 
         Task<List<AccountModel>> GetAccountByMonth(int year, int month);
 
-        Task<bool> DeleteAccountById(string id);
+        Task<bool> DeleteAccountById(string id, bool really, SimpleUserModel user);
 
-        Task<AccountModel> SaveOrUpdateAccount(AccountModel account);
+        Task<AccountModel> SaveOrUpdateAccount(AccountModel account, SimpleUserModel user);
+
+        Task<dynamic> BatchSaveAccount(List<AccountModel> accounts, SimpleUserModel user);
     }
 }

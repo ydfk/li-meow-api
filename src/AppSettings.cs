@@ -35,7 +35,7 @@ namespace LiMeowApi
         /// <summary>
         /// Jwt令牌过期时间(秒)
         /// </summary>
-        public static int JwtExpiration => GetInt(1800, "Jwt", "Expiration");
+        public static int JwtExpiration => GetInt(7*24*60*60, "Jwt", "Expiration");
 
         /// <summary>
         /// Jwt Secret

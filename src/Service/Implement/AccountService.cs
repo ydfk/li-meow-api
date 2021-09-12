@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using LiMeowApi.Schema.Account;
+using LiMeowApi.Extension;
+using LiMeowApi.Schema.User;
 
 namespace LiMeowApi.Service.Implement
 {
@@ -26,14 +29,23 @@ namespace LiMeowApi.Service.Implement
             _accountRepository = accountRepository;
         }
 
-        public async Task<bool> DeleteAccountById(string id)
+        public async Task<bool> DeleteAccountById(string id, bool really, SimpleUserModel user)
         {
             var account = await _accountRepository.Get<AccountModel>(x => x.Id == id);
-            if (account != null && account.DataStatus)
+            if (account != null )
             {
-                account.DataStatus = false;
-                await _accountRepository.Update(account);
-                return true;
+                if (really)
+                {
+                    await _accountRepository.Delete(x => x.Id == id);
+                    return true;
+                }
+                else if (account.DataStatus)
+                {
+                    account.UpdateBy = user;
+                    account.DataStatus = false;
+                    await _accountRepository.Update(account);
+                    return true;
+                }
             }
 
             return false;
@@ -47,29 +59,83 @@ namespace LiMeowApi.Service.Implement
         public async Task<List<AccountModel>> GetAccountByMonth(int year, int month)
         {
             var startDate = new DateTime(year, month, 1);
-            var endDate = month == 12 ? new DateTime(year, 12, 31): new DateTime(year, month + 1, 1).AddDays(-1);
+            var endDate = month == 12 ? new DateTime(year, 12, 31) : new DateTime(year, month + 1, 1).AddDays(-1);
             var accounts = await _accountRepository.List<AccountModel>(x => x.Date >= startDate && x.Date <= endDate);
             return accounts.OrderBy(x => x.Date).ToList();
         }
 
-        public async Task<AccountModel> SaveOrUpdateAccount(AccountModel account)
+        public async Task<AccountModel> SaveOrUpdateAccount(AccountModel account, SimpleUserModel user)
         {
-            var existAccount = await _accountRepository.Get<AccountModel>(x => x.Id == account.Id);
-            if(existAccount != null)
+            if (account.Type == AccountTypeEnum.Expenditure && account.Amount > 0)
             {
-                existAccount.Date = account.Date;
-                existAccount.Amount = account.Amount;
-                existAccount.Category = account.Category;
-                existAccount.Remark = account.Remark;
-                existAccount.Type = account.Type;
-                existAccount.Receipt = account.Receipt;
+                account.Amount = 0 - account.Amount;
+            }
 
-                return await _accountRepository.Update(existAccount);
+            var existAccount = await _accountRepository.Get<AccountModel>(x => x.Id == account.Id);
+            if (existAccount != null)
+            {
+                return await UpdateExistAccount(existAccount, account, user);
             }
             else
             {
+                account.UpdateBy = user;
+                account.CreateBy = user;
                 return await _accountRepository.Save(account);
             }
+        }
+
+        public async Task<dynamic> BatchSaveAccount(List<AccountModel> accounts, SimpleUserModel user)
+        {
+            var saveCount = 0;
+            var existAccounts = await _accountRepository.List<AccountModel>();
+
+            foreach (var account in accounts)
+            {
+                if (account.Amount != 0 && account.Date != DateTime.MinValue && account.Category.IsNotNullOrEmpty())
+                {
+                    if (account.Type == AccountTypeEnum.Expenditure && account.Amount > 0)
+                    {
+                        account.Amount = 0 - account.Amount;
+                    }
+
+                    //// 同一天相同分类金额一样的情况比较少
+                    var existAccount = existAccounts.SingleOrDefault(x => x.Amount == account.Amount && x.Category == account.Category && x.Date == account.Date);
+
+                    if (existAccount == null)
+                    {
+                        account.CreateBy = user;
+                        account.UpdateBy = user;
+                        await _accountRepository.Save(account);
+                        saveCount++;
+                    }
+                    else
+                    {
+                        account.UpdateBy = user;
+                        await UpdateExistAccount(existAccount, account, user);
+                        saveCount++;
+                    }
+                }
+                
+            }
+
+            return new
+            {
+                total = accounts.Count,
+                saveCount
+            };
+        }
+
+        private async Task<AccountModel> UpdateExistAccount(AccountModel existAccount, AccountModel account, SimpleUserModel user)
+        {
+            existAccount.Date = account.Date;
+            existAccount.Amount = account.Amount;
+            existAccount.Category = account.Category;
+            existAccount.Remark = account.Remark;
+            existAccount.Type = account.Type;
+            existAccount.Receipt = account.Receipt;
+            existAccount.UpdateBy = user;
+
+            return await _accountRepository.Update(existAccount);
         }
     }
 }

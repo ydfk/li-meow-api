@@ -5,6 +5,7 @@
 // <author>liyuhang</author>
 // <date>2021/9/1 11:58:32</date>
 //-----------------------------------------------------------------------
+using LiMeowApi.Schema.User;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
@@ -32,6 +33,10 @@ namespace LiMeowApi.Entity.Base
         [BsonRepresentation(BsonType.DateTime)]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public virtual DateTime UpdateAt { get; set; }
+
+        public virtual SimpleUserModel CreateBy { get; set; }
+
+        public virtual SimpleUserModel UpdateBy { get; set; }
 
         /// <summary>
         /// 额外元素，所有未包含在映射中元素会存在于此,类型可以为：IDictionary_string, object 或 BsonDocument
