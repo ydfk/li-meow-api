@@ -60,7 +60,7 @@ namespace LiMeowApi.Service.Implement
         {
             var startDate = new DateTime(year, month, 1);
             var endDate = month == 12 ? new DateTime(year, 12, 31) : new DateTime(year, month + 1, 1).AddDays(-1);
-            var accounts = await _accountRepository.List<AccountModel>(x => x.Date >= startDate && x.Date <= endDate && x.CreateBy.Id == user.Id);
+            var accounts = await _accountRepository.List<AccountModel>(x => x.DataStatus == true && x.Date >= startDate && x.Date <= endDate && x.CreateBy.Id == user.Id);
             return accounts.OrderBy(x => x.Date).ToList();
         }
 
@@ -71,17 +71,18 @@ namespace LiMeowApi.Service.Implement
                 account.Amount = 0 - account.Amount;
             }
 
-            var existAccount = await _accountRepository.Get<AccountModel>(x => x.Id == account.Id);
-            if (existAccount != null)
+            if (!account.Id.IsNullOrEmpty())
             {
-                return await UpdateExistAccount(existAccount, account, user);
+                var existAccount = await _accountRepository.Get<AccountModel>(x => x.Id == account.Id);
+                if (existAccount != null)
+                {
+                    return await UpdateExistAccount(existAccount, account, user);
+                }
             }
-            else
-            {
-                account.UpdateBy = user;
-                account.CreateBy = user;
-                return await _accountRepository.Save(account);
-            }
+
+            account.UpdateBy = user;
+            account.CreateBy = user;
+            return await _accountRepository.Save(account);
         }
 
         public async Task<dynamic> BatchSaveAccount(List<AccountModel> accounts, SimpleUserModel user)

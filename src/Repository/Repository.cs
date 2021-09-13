@@ -99,7 +99,6 @@ namespace LiMeowApi.Repository
         public async Task<TModel> Update<TModel>(TModel model)
         {
             var t = model.Adapt<TEntity>();
-            t.DataStatus = true;
             t.UpdateAt = DateTime.Now;
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, t.Id);
             await GetCollection().ReplaceOneAsync(filter, t, new ReplaceOptions() { IsUpsert = false });
