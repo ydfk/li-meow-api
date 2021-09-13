@@ -7,8 +7,7 @@ on:
     paths:
       - "**.cs"
       - "**.csproj"
-    paths-ignore:
-      - ".github/workflow/release.yml"
+      - "!.github/workflow/release.yml"
 
 env:
   DOTNET_VERSION: "5.0.400" # The .NET SDK version to use
