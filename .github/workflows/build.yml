@@ -27,6 +27,10 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Prepare
+        run: |
+          echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: |
           cd src
@@ -36,3 +40,14 @@ jobs:
         run: |
           cd src
           dotnet build --configuration Release --no-restore
+
+      - name: Tar
+        run: |
+          cd src
+          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app
+
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: liMeowApi-${{ env.date }}
+          path: src/liMeowApi-${{ env.date }}.tar.gz

@@ -36,10 +36,15 @@ jobs:
           cd src
           dotnet publish -c release --no-restore -p:Version=${{ github.run_number }} -o app
 
+      - name: Tar
+        run: |
+          cd src
+          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app
+
       - name: Release
         uses: ncipollo/release-action@v1
         with:
           name: li-meow-api-${{ env.date }}
           tag: ${{ env.date }}
           token: ${{ secrets.REPO_TOKEN }}
-          artifacts: "src/app/*"
+          artifacts: "src/liMeowApi-${{ env.date }}.tar.gz"
