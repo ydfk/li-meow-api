@@ -39,7 +39,7 @@ jobs:
       - name: Tar
         run: |
           cd src
-          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app
+          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app/*
 
       - name: Release
         uses: ncipollo/release-action@v1
@@ -47,4 +47,4 @@ jobs:
           name: li-meow-api-${{ env.date }}
           tag: ${{ env.date }}
           token: ${{ secrets.REPO_TOKEN }}
-          artifacts: "src/liMeowApi-${{ env.date }}.tar.gz"
+          artifacts: "src/app/liMeowApi-${{ env.date }}.tar.gz"
