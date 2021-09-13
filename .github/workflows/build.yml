@@ -43,8 +43,7 @@ jobs:
 
       - name: Tar
         run: |
-          cd src
-          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app
+          tar -zcvf liMeowApi-${{ env.date }}.tar.gz src/app/*
 
       - name: Upload
         uses: actions/upload-artifact@v2
