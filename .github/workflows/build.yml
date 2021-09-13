@@ -41,12 +41,14 @@ jobs:
           cd src
           dotnet build --configuration Release --no-restore
 
-      - name: Tar
-        run: |
-          tar -zcvf liMeowApi-${{ env.date }}.tar.gz src/app/*
+      - name: EasyZip
+        uses: papeloto/action-zip@v1
+        with:
+          files: src/app
+          dest: liMeowApi-${{ env.date }}.zip
 
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
           name: liMeowApi-${{ env.date }}
-          path: src/liMeowApi-${{ env.date }}.tar.gz
+          path: src/liMeowApi-${{ env.date }}.zip
