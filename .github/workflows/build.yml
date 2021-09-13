@@ -32,6 +32,12 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
+      - name: SetVersion
+        id: SetVersion
+        uses: juliansangillo/tag-version@v1
+        with:
+          production-branch: main
+
       - id: get_version
         uses: battila7/get-version-action@v2
 
