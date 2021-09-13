@@ -27,28 +27,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
-      - id: bump
-        uses: zwaldowski/match-label-action@v1
-        with:
-          allowed: major,minor,patch
-      - uses: zwaldowski/semver-release-action@v1
-        with:
-          bump: ${{ steps.bump.outputs.match }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
-      - id: get_version
-        uses: battila7/get-version-action@v2
-
-      - run: echo ${{ steps.get_version.outputs.version }}
-
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
-
       - name: Install dependencies
         run: |
           cd src
