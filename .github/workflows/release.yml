@@ -20,6 +20,13 @@ jobs:
         run: |
           echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
 
+      - name: Version
+        uses: xom9ikk/version-by-tag@v1
+        id: version
+        with:
+          isUseGithubRunNumber: true
+          offset: 1
+
       - uses: actions/checkout@v2
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -34,7 +41,7 @@ jobs:
       - name: Publish
         run: |
           cd src
-          dotnet publish -c release --no-restore -p:Version=${{ env.date }} -o app
+          dotnet publish -c release --no-restore -p:Version=${{ steps.version.outputs.semver }} -o app
 
       - name: Release
         uses: ncipollo/release-action@v1
