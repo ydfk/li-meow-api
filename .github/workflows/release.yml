@@ -38,8 +38,8 @@ jobs:
 
       - name: Tar
         run: |
-          cd src
-          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app/*
+          cd src/app
+          tar -zcvf liMeowApi-${{ env.date }}.tar.gz *
 
       - name: Release
         uses: ncipollo/release-action@v1
