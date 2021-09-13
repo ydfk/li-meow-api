@@ -32,11 +32,15 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: SetVersion
-        id: SetVersion
-        uses: juliansangillo/tag-version@v1
+      - id: bump
+        uses: zwaldowski/match-label-action@v1
         with:
-          production-branch: main
+          allowed: major,minor,patch
+      - uses: zwaldowski/semver-release-action@v1
+        with:
+          bump: ${{ steps.bump.outputs.match }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
 
       - id: get_version
         uses: battila7/get-version-action@v2
