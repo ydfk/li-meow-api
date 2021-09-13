@@ -39,12 +39,12 @@ jobs:
       - name: Build
         run: |
           cd src
-          dotnet build --configuration Release --no-restore
+          dotnet build --configuration Release --no-restore -o app
 
       - name: EasyZip
         uses: papeloto/action-zip@v1
         with:
-          files: src/bin/Release/net5.0
+          files: src/app
           dest: liMeowApi-${{ env.date }}.zip
 
       - name: Upload
