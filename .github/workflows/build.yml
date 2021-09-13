@@ -44,11 +44,11 @@ jobs:
       - name: EasyZip
         uses: papeloto/action-zip@v1
         with:
-          files: src/app
+          files: src/bin/debug/net5.0
           dest: liMeowApi-${{ env.date }}.zip
 
       - name: Upload
         uses: actions/upload-artifact@v2
         with:
           name: liMeowApi-${{ env.date }}
-          path: src/liMeowApi-${{ env.date }}.zip
+          path: src/*.zip
