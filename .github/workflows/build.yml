@@ -51,4 +51,4 @@ jobs:
         uses: actions/upload-artifact@v2.2.4
         with:
           name: liMeowApi-${{ env.date }}
-          path: src/liMeowApi-${{ env.date }}.zip
+          path: src/app/liMeowApi-${{ env.date }}.zip
