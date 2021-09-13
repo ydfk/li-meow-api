@@ -41,13 +41,8 @@ jobs:
           cd src
           dotnet build --configuration Release --no-restore -o app
 
-      - name: Tar
-        run: |
-          cd src
-          tar -zcvf liMeowApi-${{ env.date }}.tar.gz app
-
       - name: Upload
         uses: actions/upload-artifact@v2.2.4
         with:
           name: liMeowApi-${{ env.date }}
-          path: src/liMeowApi-${{ env.date }}.tar.gz
+          path: src/app
