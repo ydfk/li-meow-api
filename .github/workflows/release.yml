@@ -1,0 +1,43 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: "5.0.400" # The .NET SDK version to use
+  Run_number: ${{github.run_number}}
+
+jobs:
+  build:
+    name: build-${{matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Prepare
+        run: |
+          echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Publish
+        run: |
+          cd src
+          dotnet publish -c release --no-restore -p:Version=${{ env.date }} -o app
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          name: li-meow-api-${{ env.date }}
+          tag: ${{ env.date }}
+          token: ${{ secrets.REPO_TOKEN }}
+          artifacts: "src/app/*"

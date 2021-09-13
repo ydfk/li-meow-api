@@ -1,0 +1,8 @@
+﻿apps:
+- script: 'dotnet LiMeowApi.dll'
+  exec_mode: fork
+  name: 'Li_Meow_Api'
+  cwd: /root/site/liMeowApi
+  watch: false
+  env:
+    ASPNETCORE_ENVIRONMENT: production

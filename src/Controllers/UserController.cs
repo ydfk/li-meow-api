@@ -6,7 +6,7 @@
 // <date>9/11/2021 12:06:36 PM</date>
 //-----------------------------------------------------------------------
 
-using LiMeowApi.Controllers;
+using LiMeowApi.Schema.User;
 using LiMeowApi.Service.Contract;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -33,6 +33,16 @@ namespace LiMeowApi.Controllers
         public async Task<bool> ModifyPassword(string oldPassword, string newPassword)
         {
             return await _userService.ModifyPassword(UserContext.Id, oldPassword, newPassword);
+        }
+
+        /// <summary>
+        /// 获取当前用户
+        /// </summary>
+        /// <returns>用户</returns>
+        [HttpGet("Current")]
+        public async Task<UserModel> GetCurrentUser()
+        {
+            return await _userService.GetUserById(UserContext.Id);
         }
     }
 }
