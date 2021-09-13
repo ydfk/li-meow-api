@@ -7,9 +7,7 @@
 //-----------------------------------------------------------------------
 using LiMeowApi.Schema;
 using LiMeowApi.Schema.User;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LiMeowApi.Service.Contract
@@ -18,7 +16,7 @@ namespace LiMeowApi.Service.Contract
     {
         Task<AccountModel> GetAccountById(string id);
 
-        Task<List<AccountModel>> GetAccountByMonth(int year, int month);
+        Task<List<AccountModel>> GetAccountByMonth(int year, int month, SimpleUserModel user);
 
         Task<bool> DeleteAccountById(string id, bool really, SimpleUserModel user);
 

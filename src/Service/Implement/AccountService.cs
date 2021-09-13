@@ -6,17 +6,17 @@
 // <date>9/11/2021 5:03:29 PM</date>
 //-----------------------------------------------------------------------
 
-using LiMeowApi.Repository;
 using LiMeowApi.Entity.Account;
-using LiMeowApi.Schema;
-using LiMeowApi.Service.Contract;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using LiMeowApi.Schema.Account;
 using LiMeowApi.Extension;
+using LiMeowApi.Repository;
+using LiMeowApi.Schema;
+using LiMeowApi.Schema.Account;
 using LiMeowApi.Schema.User;
+using LiMeowApi.Service.Contract;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LiMeowApi.Service.Implement
 {
@@ -32,7 +32,7 @@ namespace LiMeowApi.Service.Implement
         public async Task<bool> DeleteAccountById(string id, bool really, SimpleUserModel user)
         {
             var account = await _accountRepository.Get<AccountModel>(x => x.Id == id);
-            if (account != null )
+            if (account != null)
             {
                 if (really)
                 {
@@ -56,11 +56,11 @@ namespace LiMeowApi.Service.Implement
             return await _accountRepository.Get<AccountModel>(x => x.Id == id);
         }
 
-        public async Task<List<AccountModel>> GetAccountByMonth(int year, int month)
+        public async Task<List<AccountModel>> GetAccountByMonth(int year, int month, SimpleUserModel user)
         {
             var startDate = new DateTime(year, month, 1);
             var endDate = month == 12 ? new DateTime(year, 12, 31) : new DateTime(year, month + 1, 1).AddDays(-1);
-            var accounts = await _accountRepository.List<AccountModel>(x => x.Date >= startDate && x.Date <= endDate);
+            var accounts = await _accountRepository.List<AccountModel>(x => x.Date >= startDate && x.Date <= endDate && x.CreateBy.Id == user.Id);
             return accounts.OrderBy(x => x.Date).ToList();
         }
 
@@ -115,7 +115,7 @@ namespace LiMeowApi.Service.Implement
                         saveCount++;
                     }
                 }
-                
+
             }
 
             return new

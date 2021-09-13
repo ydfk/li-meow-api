@@ -1,9 +1,7 @@
 ﻿using LiMeowApi.Schema;
 using LiMeowApi.Service.Contract;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LiMeowApi.Controllers
@@ -26,7 +24,7 @@ namespace LiMeowApi.Controllers
         [HttpGet("Month")]
         public async Task<IList<AccountModel>> GetByMonth(int year, int month)
         {
-            return await _accountService.GetAccountByMonth(year, month);
+            return await _accountService.GetAccountByMonth(year, month, UserContext);
         }
 
         [HttpDelete("{id}")]
@@ -42,7 +40,7 @@ namespace LiMeowApi.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task<AccountModel> Update(string id, [FromBody]AccountModel account)
+        public async Task<AccountModel> Update(string id, [FromBody] AccountModel account)
         {
             account.Id = id;
             return await _accountService.SaveOrUpdateAccount(account, UserContext);
