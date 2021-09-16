@@ -7,6 +7,12 @@ on:
     paths:
       - "**.cs"
       - "**.csproj"
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "是否发布"
+        required: false
+        default: false
 
 env:
   DOTNET_VERSION: "5.0.400" # The .NET SDK version to use
@@ -37,6 +43,8 @@ jobs:
           path: package.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "has-updated -- ${{ steps.version-updated.outputs.has-updated }}"
+      - run: echo "current-version -- ${{ steps.version-updated.outputs.current-package-version }}"
 
       - name: Install dependencies
         run: |
@@ -55,16 +63,16 @@ jobs:
           path: src/app
 
       - name: Tar
-        if: steps.version-updated.outputs.has-updated
+        if: steps.version-updated.outputs.has-updated || github.event.inputs.release
         run: |
           cd src/app
           tar -zcvf liMeowApi-${{ steps.version-updated.outputs.current-package-version }}.tar.gz *
 
       - name: Release
         uses: ncipollo/release-action@v1
-        if: steps.version-updated.outputs.has-updated
+        if: steps.version-updated.outputs.has-updated || github.event.inputs.release
         with:
-          name: ${{ steps.version-updated.outputs.version }}
+          name: ${{ steps.version-updated.outputs.current-package-version }}
           tag: ${{ env.date }}
           token: ${{ secrets.REPO_TOKEN }}
           artifacts: "src/app/liMeowApi-${{ steps.version-updated.outputs.current-package-version }}.tar.gz"
