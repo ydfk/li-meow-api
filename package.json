@@ -1,0 +1,40 @@
+{
+  "name": "li-meow-api",
+  "version": "1.0.0",
+  "description": "a dotnet5 template with mongodb",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "cz": "git add . && git cz",
+    "release:major": "standard-version --release-as major",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ydfk/li-meow-api.git"
+  },
+  "keywords": [
+    "dotnet"
+  ],
+  "author": "ydfk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ydfk/li-meow-api/issues"
+  },
+  "homepage": "https://github.com/ydfk/li-meow-api#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "commitizen": "^4.2.4",
+    "conventional-changelog-cli": "^2.1.1",
+    "cz-customizable": "^6.3.0",
+    "husky": "^7.0.2",
+    "standard-version": "^9.3.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  }
+}
