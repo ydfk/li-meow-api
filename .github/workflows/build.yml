@@ -7,7 +7,6 @@ on:
     paths:
       - "**.cs"
       - "**.csproj"
-      - "!.github/workflow/release.yml"
 
 env:
   DOTNET_VERSION: "5.0.400" # The .NET SDK version to use
@@ -31,6 +30,14 @@ jobs:
         run: |
           echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
 
+      - name: Package Version Updated
+        uses: MontyD/package-json-updated-action@1.0.1
+        id: version-updated
+        with:
+          path: package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
         run: |
           cd src
@@ -39,10 +46,25 @@ jobs:
       - name: Build
         run: |
           cd src
-          dotnet build --configuration Release --no-restore -o app
+          dotnet publish -c release --no-restore -p:Version=${{ steps.version-updated.outputs.current-package-version }} -o app
 
       - name: Upload
         uses: actions/upload-artifact@v2.2.4
         with:
           name: liMeowApi-${{ env.date }}
           path: src/app
+
+      - name: Tar
+        if: steps.version-updated.outputs.has-updated
+        run: |
+          cd src/app
+          tar -zcvf liMeowApi-${{ steps.version-updated.outputs.current-package-version }}.tar.gz *
+
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: steps.version-updated.outputs.has-updated
+        with:
+          name: ${{ steps.version-updated.outputs.version }}
+          tag: ${{ env.date }}
+          token: ${{ secrets.REPO_TOKEN }}
+          artifacts: "src/app/liMeowApi-${{ steps.version-updated.outputs.current-package-version }}.tar.gz"
