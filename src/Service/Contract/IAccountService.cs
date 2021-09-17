@@ -7,6 +7,7 @@
 //-----------------------------------------------------------------------
 using LiMeowApi.Schema;
 using LiMeowApi.Schema.User;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,5 +24,7 @@ namespace LiMeowApi.Service.Contract
         Task<AccountModel> SaveOrUpdateAccount(AccountModel account, SimpleUserModel user);
 
         Task<dynamic> BatchSaveAccount(List<AccountModel> accounts, SimpleUserModel user);
+
+        Task<List<AccountModel>> GetAccount(DateTime startDate, DateTime endDate, SimpleUserModel user);
     }
 }

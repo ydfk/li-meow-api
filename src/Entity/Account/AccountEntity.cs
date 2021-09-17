@@ -22,14 +22,24 @@ namespace LiMeowApi.Entity.Account
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// 金额
-        /// </summary>
-        public double Amount { get; set; }
-
-        /// <summary>
         /// 分类
         /// </summary>
         public string Category { get; set; }
+
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public string Quantity { get; set; }
+
+        /// <summary>
+        /// 金额
+        /// </summary>
+        public double Amount { get; set; }
 
         /// <summary>
         /// 备注
@@ -37,7 +47,7 @@ namespace LiMeowApi.Entity.Account
         public string Remark { get; set; }
 
         /// <summary>
-        /// 分类
+        /// 类型
         /// </summary>
         public AccountTypeEnum Type { get; set; }
 

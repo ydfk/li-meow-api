@@ -7,6 +7,7 @@
 //-----------------------------------------------------------------------
 
 using LiMeowApi.Entity.Account;
+using LiMeowApi.Entity.Code;
 using LiMeowApi.Extension;
 using LiMeowApi.Repository;
 using LiMeowApi.Schema;
@@ -23,10 +24,12 @@ namespace LiMeowApi.Service.Implement
     public class AccountService : IAccountService
     {
         private readonly IRepository<AccountEntity> _accountRepository;
+        private readonly IRepository<CodeEntity> _codeRepository;
 
-        public AccountService(IRepository<AccountEntity> accountRepository)
+        public AccountService(IRepository<AccountEntity> accountRepository, IRepository<CodeEntity> codeRepository)
         {
             _accountRepository = accountRepository;
+            _codeRepository = codeRepository;
         }
 
         public async Task<bool> DeleteAccountById(string id, bool really, SimpleUserModel user)
@@ -60,8 +63,7 @@ namespace LiMeowApi.Service.Implement
         {
             var startDate = new DateTime(year, month, 1);
             var endDate = month == 12 ? new DateTime(year, 12, 31) : new DateTime(year, month + 1, 1).AddDays(-1);
-            var accounts = await _accountRepository.List<AccountModel>(x => x.DataStatus == true && x.Date >= startDate && x.Date <= endDate && x.CreateBy.Id == user.Id);
-            return accounts.OrderBy(x => x.Date).ToList();
+            return await GetAccount(startDate, endDate, user);
         }
 
         public async Task<AccountModel> SaveOrUpdateAccount(AccountModel account, SimpleUserModel user)
@@ -116,7 +118,6 @@ namespace LiMeowApi.Service.Implement
                         saveCount++;
                     }
                 }
-
             }
 
             return new
@@ -124,6 +125,12 @@ namespace LiMeowApi.Service.Implement
                 total = accounts.Count,
                 saveCount
             };
+        }
+
+        public async Task<List<AccountModel>> GetAccount(DateTime startDate, DateTime endDate, SimpleUserModel user)
+        {
+            var accounts = await _accountRepository.List<AccountModel>(x => x.DataStatus == true && x.Date >= startDate && x.Date <= endDate && x.CreateBy.Id == user.Id);
+            return accounts.OrderBy(x => x.Date).ToList();
         }
 
         private async Task<AccountModel> UpdateExistAccount(AccountModel existAccount, AccountModel account, SimpleUserModel user)
@@ -135,6 +142,8 @@ namespace LiMeowApi.Service.Implement
             existAccount.Type = account.Type;
             existAccount.Receipt = account.Receipt;
             existAccount.UpdateBy = user;
+            existAccount.Name = account.Name;
+            existAccount.Quantity = account.Quantity;
 
             return await _accountRepository.Update(existAccount);
         }

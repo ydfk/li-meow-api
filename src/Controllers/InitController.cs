@@ -7,6 +7,8 @@
 //-----------------------------------------------------------------------
 
 using LiMeowApi.Extension;
+using LiMeowApi.Schema.App;
+using LiMeowApi.Schema.Code;
 using LiMeowApi.Schema.User;
 using LiMeowApi.Service.Contract;
 using LiMeowApi.Utility;
@@ -24,10 +26,12 @@ namespace LiMeowApi.Controllers
     public class InitController : ApiController
     {
         private readonly IUserService _userService;
+        private readonly ICodeService _codeService;
 
-        public InitController(IUserService userService)
+        public InitController(IUserService userService, ICodeService codeService)
         {
             _userService = userService;
+            _codeService = codeService;
         }
 
         /// <summary>
@@ -46,6 +50,50 @@ namespace LiMeowApi.Controllers
                     await _userService.AddUser(user);
                 }
             }
+        }
+
+        [HttpPost("AccountCategory")]
+        public async Task<bool> InitAccountCategory()
+        {
+            var codeType = await _codeService.SaveOrUpdateCodeType(new CodeTypeModel
+            {
+                Id = AppConstant.InComeCodeTypeId,
+                Name = "账单收入分类"
+            }, UserContext);
+            await _codeService.DeleteCodeByCodeTypeId(codeType.Id, true, UserContext);
+            await _codeService.SaveOrUpdateCode(new CodeModel
+            {
+                Name = "支钱",
+                CodeTypeId = codeType.Id,
+                OrderIndex = 0,
+            }, UserContext);
+
+            var expenditureCodeType = await _codeService.SaveOrUpdateCodeType(new CodeTypeModel
+            {
+                Id = AppConstant.ExpenditureCodeTypeId,
+                Name = "账单支出分类"
+            }, UserContext);
+            await _codeService.DeleteCodeByCodeTypeId(expenditureCodeType.Id, true, UserContext);
+            await _codeService.SaveOrUpdateCode(new CodeModel
+            {
+                Name = "办公用品",
+                CodeTypeId = expenditureCodeType.Id,
+                OrderIndex = 0,
+            }, UserContext);
+            await _codeService.SaveOrUpdateCode(new CodeModel
+            {
+                Name = "办公杂费",
+                CodeTypeId = expenditureCodeType.Id,
+                OrderIndex = 10,
+            }, UserContext);
+            await _codeService.SaveOrUpdateCode(new CodeModel
+            {
+                Name = "其他",
+                CodeTypeId = expenditureCodeType.Id,
+                OrderIndex = 30,
+            }, UserContext);
+
+            return true;
         }
     }
 }
